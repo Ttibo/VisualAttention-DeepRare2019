@@ -83,6 +83,13 @@ if __name__ == "__main__":
         help="Liste d'entiers séparés par des virgules (ex: 1,2,3)."
     )
 
+    parser.add_argument(
+        "--threshold", 
+        type=float, 
+        default=None, 
+        help="Threshold for torch rare 2021"
+    )
+
 
     args = parser.parse_args()
 
@@ -93,8 +100,7 @@ if __name__ == "__main__":
         print(f"Erreur lors du chargement du modèle : {e}")
 
 
-
-    rarity_network = DeepRare() # instantiate class
+    rarity_network = DeepRare(threshold=args.threshold) # instantiate class
     directory = r'input'
 
     for filename in os.listdir(directory):

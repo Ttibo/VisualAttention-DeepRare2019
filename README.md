@@ -15,6 +15,12 @@ Just type :
 
 The main function takes in a folder all the images, show results and record the saliency map in a different folder. 
 
+For Torch version :
+
+```python
+ python run_torch_rare.py --model_name [vgg16,mobilnet_v2] --layers_to_extract [list of int split by ','] --threshold [threshold for rare 2021 Default None rare 2019]
+```
+
 ### Paper results reproduction
 
 The result from this code is the raw data which will not let you reproduce exactly the paper results. For this purpose you still need to low-pass filter the results and, for natural images datasets (such as MIT1003 ...), add also a centred Gaussian. For O3 and P3 datasets, centred Gaussian is not used. 
@@ -30,6 +36,9 @@ The codes were tested with the following configuration:
 * Keras 2.2.0
 * Tensorflow 1.5.0
 * Matplotlib 3.1.2
+
+Library for torch version
+* torch 2.5.1
 
 ### Licence
 

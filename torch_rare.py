@@ -9,11 +9,12 @@ class DeepRare(nn.Module):
     DeepRare2019 Class.
     """
 
-    def __init__(self):
+    def __init__(self, threshold = None):
         """
         Constructor for the DeepRare model.
         """
         super(DeepRare, self).__init__()
+        self.threshold = threshold
 
     @staticmethod
     def tensor_resize(tensor, size=(240, 240)):
@@ -109,14 +110,12 @@ class DeepRare(nn.Module):
         dst = self.normalize_tensor(hist[hist_idx], min_val=0, max_val=1)
         return self.map_ponderation(dst)
 
-    def apply_rarity(self, layer_output, threshold=0.2):
+    def apply_rarity(self, layer_output):
         """
         Apply rarity computation to all feature maps in a layer.
 
         Args:
             layer_output (torch.Tensor): Feature maps of shape [B, C, H, W].
-            threshold (float): Threshold to filter low-rarity values.
-
         Returns:
             torch.Tensor: Processed feature map.
         """
@@ -134,7 +133,9 @@ class DeepRare(nn.Module):
             processed_map += self.map_ponderation(feature)
 
         processed_map = self.normalize_tensor(processed_map, min_val=0, max_val=1)
-        processed_map[processed_map < threshold] = 0
+        if self.threshold is not None:
+            processed_map[processed_map < self.threshold] = 0
+            
         return processed_map
 
     def forward(self, layer_output):
